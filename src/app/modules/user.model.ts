@@ -6,13 +6,23 @@ const userSchema = new Schema<IUser>({
   username: { type: String, required: true },
   password: { type: String, required: true },
   fullName: {
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    firstName: {
+      type: String,
+      required: [true, 'First Name is required'],
+      trim: true,
+      maxlength: [20, 'First Name cannot be more than 20 characters'],
+    },
+    lastName: {
+      type: String,
+      required: [true, 'First Name is required'],
+      trim: true,
+      maxlength: [20, 'First Name cannot be more than 20 characters'],
+    },
   },
   age: { type: Number, required: true },
   email: { type: String, required: true },
-  isActive: { type: Boolean },
-  hobbies: [{ type: String }, { type: String }],
+  isActive: { type: Boolean, default: false },
+  hobbies: { type: [String] },
   address: {
     street: { type: String },
     city: { type: String },

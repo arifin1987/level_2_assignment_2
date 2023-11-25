@@ -9,17 +9,15 @@ export type IUser = {
   age: number;
   email: string;
   isActive: boolean;
-  hobbies: [string, string];
+  hobbies: string[];
   address: {
     street: string;
     city: string;
     country: string;
   };
-  orders: [
-    {
-      productName: string;
-      price: number;
-      quantity: number;
-    },
-  ];
+  orders: {
+    productName: string;
+    price: number;
+    quantity: number;
+  }[];
 };
