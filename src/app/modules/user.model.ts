@@ -1,10 +1,12 @@
 import { IUser, UserModel } from './user/user.interface';
 import { Schema, model } from 'mongoose';
+import bcrypt from 'bcrypt';
+import config from '../config';
 
 const userSchema = new Schema<IUser, UserModel>({
   userId: { type: Number, required: true, unique: true },
   username: { type: String, required: true },
-  password: { type: String, required: true },
+  password: { type: String, required: true, unique: true },
   fullName: {
     firstName: {
       type: String,
@@ -37,6 +39,21 @@ const userSchema = new Schema<IUser, UserModel>({
   ],
 });
 
+// pre save middleware
+userSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds),
+  );
+  next();
+});
+
+// post save middleware
+userSchema.post('save', function () {
+  console.log(this, 'post hook: we saved our data');
+});
 // creating a custom static method
 userSchema.statics.isUserExists = async function (userId: string) {
   const existingUser = await User.findOne({ userId });
