@@ -1,8 +1,8 @@
-import { IUser } from './user/user.interface';
+import { IUser, UserModel } from './user/user.interface';
 import { Schema, model } from 'mongoose';
 
-const userSchema = new Schema<IUser>({
-  userId: { type: Number },
+const userSchema = new Schema<IUser, UserModel>({
+  userId: { type: Number, required: true, unique: true },
   username: { type: String, required: true },
   password: { type: String, required: true },
   fullName: {
@@ -37,4 +37,10 @@ const userSchema = new Schema<IUser>({
   ],
 });
 
-export const User = model<IUser>('User', userSchema);
+// creating a custom static method
+userSchema.statics.isUserExists = async function (userId: string) {
+  const existingUser = await User.findOne({ userId });
+  return existingUser;
+};
+
+export const User = model<IUser, UserModel>('User', userSchema);
