@@ -6,7 +6,7 @@ import config from '../config';
 const userSchema = new Schema<IUser, UserModel>({
   userId: { type: Number, required: true, unique: true },
   username: { type: String, required: true },
-  password: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   fullName: {
     firstName: {
       type: String,
@@ -51,8 +51,8 @@ userSchema.pre('save', async function (next) {
 });
 
 // post save middleware
-userSchema.post('save', function () {
-  console.log(this, 'post hook: we saved our data');
+userSchema.post('save', function (doc) {
+  doc.password = '';
 });
 // creating a custom static method
 userSchema.statics.isUserExists = async function (userId: string) {
