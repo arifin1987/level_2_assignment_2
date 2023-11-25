@@ -16,8 +16,17 @@ const getSpecificUserFromDB = async (userId: string | number) => {
   return result;
 };
 
+const updateUserDataIntoDB = async (userId: string | number) => {
+  const updateData = {
+    username: 'Abdul',
+    age: 500,
+  };
+  const result = await User.findOneAndUpdate({ userId }, updateData);
+  return result;
+};
 export const UserServices = {
   createUserIntoDB,
   getAllUsersFromDB,
   getSpecificUserFromDB,
+  updateUserDataIntoDB,
 };

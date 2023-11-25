@@ -44,9 +44,24 @@ const getSpecificUser = async (req: Request, res: Response) => {
     console.log(err);
   }
 };
+const updateSpecificUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const result = await UserServices.updateUserDataIntoDB(userId);
+    res.status(200).json({
+      success: true,
+      message: 'User data updated stuccessfully',
+      data: result,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export const UserControllers = {
   createUser,
   getAllUsers,
   getSpecificUser,
+  updateSpecificUser,
 };
